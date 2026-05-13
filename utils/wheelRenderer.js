@@ -1,4 +1,5 @@
 const { createCanvas } = require('canvas');
+const rewards = require('../rewards.json');
 
 const WHEEL_SIZE = 500;
 const CENTER = WHEEL_SIZE / 2;
@@ -9,12 +10,12 @@ const COLORS = [
   '#BB8FCE', '#85C1E9', '#F8B500', '#00CED1'
 ];
 
-function drawWheel(ctx, rotation, rewards, winningIndex = null) {
+function drawWheel(ctx, rotation, rewardsList = rewards, winningIndex = null) {
   ctx.clearRect(0, 0, WHEEL_SIZE, WHEEL_SIZE);
   ctx.fillStyle = '#2C3E50';
   ctx.fillRect(0, 0, WHEEL_SIZE, WHEEL_SIZE);
   
-  const numSegments = rewards.length;
+  const numSegments = rewardsList.length;
   const segmentAngle = (2 * Math.PI) / numSegments;
   
   ctx.save();
@@ -48,7 +49,7 @@ function drawWheel(ctx, rotation, rewards, winningIndex = null) {
     const x = Math.cos(angle) * (RADIUS * 0.6);
     const y = Math.sin(angle) * (RADIUS * 0.6);
     ctx.translate(x, y);
-    ctx.rotate(angle - Math.PI / 2);
+    ctx.rotate(angle + Math.PI / 2);
     ctx.scale(-1, 1);
     ctx.textAlign = 'center';
     ctx.fillStyle = '#FFFFFF';
@@ -57,7 +58,7 @@ function drawWheel(ctx, rotation, rewards, winningIndex = null) {
     ctx.shadowBlur = 3;
     ctx.shadowOffsetX = 1;
     ctx.shadowOffsetY = 1;
-    ctx.fillText(rewards[i].name, 0, 4);
+    ctx.fillText(rewardsList[i].name, 0, 4);
     ctx.restore();
   }
   
@@ -83,10 +84,10 @@ function drawWheel(ctx, rotation, rewards, winningIndex = null) {
   ctx.stroke();
 }
 
-function generateWheelImage(rotation, rewards, winningIndex = null) {
+function generateWheelImage(rotation, rewardsList = rewards, winningIndex = null) {
   const canvas = createCanvas(WHEEL_SIZE, WHEEL_SIZE);
   const ctx = canvas.getContext('2d');
-  drawWheel(ctx, rotation, rewards, winningIndex);
+  drawWheel(ctx, rotation, rewardsList, winningIndex);
   return canvas.toBuffer('image/png');
 }
 
