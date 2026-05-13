@@ -2,3 +2,5 @@ node_modules/
 data/
 config.json
 .env
+test-*.js
+test-*.png
