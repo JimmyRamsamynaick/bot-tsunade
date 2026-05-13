@@ -19,30 +19,47 @@ module.exports = {
       return interaction.reply({ content: 'Seul le propriétaire du bot peut utiliser cette commande !', ephemeral: true });
     }
 
-    await interaction.deferReply();
-    
-    const targetUser = interaction.options.getUser('utilisateur');
-    const { reward, index } = spinWheel(rewards);
-    
-    const numSegments = rewards.length;
-    const segmentAngle = (2 * Math.PI) / numSegments;
-    const finalRotation = -Math.PI / 2 - index * segmentAngle - segmentAngle / 2;
-    
-    const finalImage = generateWheelImage(finalRotation, rewards, index);
-    const finalAttachment = new AttachmentBuilder(finalImage, { name: 'wheel-final.png' });
-    const newPoints = addPoints(targetUser.id, reward.value);
-    
-    const embed = new EmbedBuilder()
-      .setColor(reward.value > 0 ? '#00ff00' : reward.value < 0 ? '#ff0000' : '#ffff00')
-      .setTitle('🎡 Résultat de la roue !')
-      .setDescription(`${targetUser} a obtenu **${reward.name}** !`)
-      .addFields(
-        { name: 'Points', value: reward.value >= 0 ? `+${reward.value}` : `${reward.value}`, inline: true },
-        { name: 'Nouveau solde', value: `${newPoints} points`, inline: true }
-      )
-      .setImage('attachment://wheel-final.png')
-      .setTimestamp();
-    
-    await interaction.editReply({ embeds: [embed], files: [finalAttachment] });
+    try {
+      if (!interaction.deferred && !interaction.replied) {
+        await interaction.deferReply();
+      }
+      
+      const targetUser = interaction.options.getUser('utilisateur');
+      const { reward, index } = spinWheel(rewards);
+      
+      const numSegments = rewards.length;
+      const segmentAngle = (2 * Math.PI) / numSegments;
+      const finalRotation = -Math.PI / 2 - index * segmentAngle - segmentAngle / 2;
+      
+      const finalImage = generateWheelImage(finalRotation, rewards, index);
+      const finalAttachment = new AttachmentBuilder(finalImage, { name: 'wheel-final.png' });
+      const newPoints = addPoints(targetUser.id, reward.value);
+      
+      const embed = new EmbedBuilder()
+        .setColor(reward.value > 0 ? '#00ff00' : reward.value < 0 ? '#ff0000' : '#ffff00')
+        .setTitle('🎡 Résultat de la roue !')
+        .setDescription(`${targetUser} a obtenu **${reward.name}** !`)
+        .addFields(
+          { name: 'Points', value: reward.value >= 0 ? `+${reward.value}` : `${reward.value}`, inline: true },
+          { name: 'Nouveau solde', value: `${newPoints} points`, inline: true }
+        )
+        .setImage('attachment://wheel-final.png')
+        .setTimestamp();
+      
+      if (interaction.deferred && !interaction.replied) {
+        await interaction.editReply({ embeds: [embed], files: [finalAttachment] });
+      } else if (!interaction.replied) {
+        await interaction.reply({ embeds: [embed], files: [finalAttachment] });
+      }
+    } catch (error) {
+      console.error('Error in roue command:', error);
+      try {
+        if (!interaction.replied) {
+          await interaction.reply({ content: 'Une erreur est survenue !', ephemeral: true });
+        }
+      } catch (e) {
+        console.error('Error replying to interaction:', e);
+      }
+    }
   },
 };

@@ -18,25 +18,42 @@ module.exports = {
       return interaction.reply({ content: 'Seul le propriétaire du bot peut utiliser cette commande !', ephemeral: true });
     }
 
-    await interaction.deferReply();
-    
-    const targetUser = interaction.options.getUser('utilisateur');
-    const { reward, index } = spinWheel(rewards);
-    
-    const numSegments = rewards.length;
-    const segmentAngle = (2 * Math.PI) / numSegments;
-    const finalRotation = -Math.PI / 2 - index * segmentAngle - segmentAngle / 2;
-    
-    const finalImage = generateWheelImage(finalRotation, rewards, index);
-    const finalAttachment = new AttachmentBuilder(finalImage, { name: 'wheel-final.png' });
-    
-    const embed = new EmbedBuilder()
-      .setColor('#0099ff')
-      .setTitle('🎡 Résultat de la roue pack !')
-      .setDescription(`${targetUser} a obtenu **${reward.name}** !`)
-      .setImage('attachment://wheel-final.png')
-      .setTimestamp();
-    
-    await interaction.editReply({ embeds: [embed], files: [finalAttachment] });
+    try {
+      if (!interaction.deferred && !interaction.replied) {
+        await interaction.deferReply();
+      }
+      
+      const targetUser = interaction.options.getUser('utilisateur');
+      const { reward, index } = spinWheel(rewards);
+      
+      const numSegments = rewards.length;
+      const segmentAngle = (2 * Math.PI) / numSegments;
+      const finalRotation = -Math.PI / 2 - index * segmentAngle - segmentAngle / 2;
+      
+      const finalImage = generateWheelImage(finalRotation, rewards, index);
+      const finalAttachment = new AttachmentBuilder(finalImage, { name: 'wheel-final.png' });
+      
+      const embed = new EmbedBuilder()
+        .setColor('#0099ff')
+        .setTitle('🎡 Résultat de la roue pack !')
+        .setDescription(`${targetUser} a obtenu **${reward.name}** !`)
+        .setImage('attachment://wheel-final.png')
+        .setTimestamp();
+      
+      if (interaction.deferred && !interaction.replied) {
+        await interaction.editReply({ embeds: [embed], files: [finalAttachment] });
+      } else if (!interaction.replied) {
+        await interaction.reply({ embeds: [embed], files: [finalAttachment] });
+      }
+    } catch (error) {
+      console.error('Error in rouepack command:', error);
+      try {
+        if (!interaction.replied) {
+          await interaction.reply({ content: 'Une erreur est survenue !', ephemeral: true });
+        }
+      } catch (e) {
+        console.error('Error replying to interaction:', e);
+      }
+    }
   },
 };
