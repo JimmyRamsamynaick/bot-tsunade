@@ -52,7 +52,7 @@ function drawWheel(ctx, rotation, rewards, winningIndex = null) {
     ctx.scale(-1, 1);
     ctx.textAlign = 'center';
     ctx.fillStyle = '#FFFFFF';
-    ctx.font = 'bold 10px Arial';
+    ctx.font = 'bold 12px Arial';
     ctx.shadowColor = 'rgba(0,0,0,0.7)';
     ctx.shadowBlur = 3;
     ctx.shadowOffsetX = 1;
