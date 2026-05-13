@@ -1,6 +1,5 @@
-const rewards = require('../rewards.json');
 
-function spinWheel() {
+function spinWheel(rewards) {
   const totalWeight = rewards.reduce((sum, reward) => sum + reward.weight, 0);
   let random = Math.random() * totalWeight;
   

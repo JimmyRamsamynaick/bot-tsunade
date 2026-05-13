@@ -1,5 +1,4 @@
 const { createCanvas } = require('canvas');
-const rewards = require('../rewards.json');
 
 const WHEEL_SIZE = 500;
 const CENTER = WHEEL_SIZE / 2;
@@ -10,7 +9,7 @@ const COLORS = [
   '#BB8FCE', '#85C1E9', '#F8B500', '#00CED1'
 ];
 
-function drawWheel(ctx, rotation, winningIndex = null) {
+function drawWheel(ctx, rotation, rewards, winningIndex = null) {
   ctx.clearRect(0, 0, WHEEL_SIZE, WHEEL_SIZE);
   ctx.fillStyle = '#2C3E50';
   ctx.fillRect(0, 0, WHEEL_SIZE, WHEEL_SIZE);
@@ -53,7 +52,7 @@ function drawWheel(ctx, rotation, winningIndex = null) {
     ctx.scale(-1, 1);
     ctx.textAlign = 'center';
     ctx.fillStyle = '#FFFFFF';
-    ctx.font = 'bold 12px Arial';
+    ctx.font = 'bold 10px Arial';
     ctx.shadowColor = 'rgba(0,0,0,0.7)';
     ctx.shadowBlur = 3;
     ctx.shadowOffsetX = 1;
@@ -84,10 +83,10 @@ function drawWheel(ctx, rotation, winningIndex = null) {
   ctx.stroke();
 }
 
-function generateWheelImage(rotation, winningIndex = null) {
+function generateWheelImage(rotation, rewards, winningIndex = null) {
   const canvas = createCanvas(WHEEL_SIZE, WHEEL_SIZE);
   const ctx = canvas.getContext('2d');
-  drawWheel(ctx, rotation, winningIndex);
+  drawWheel(ctx, rotation, rewards, winningIndex);
   return canvas.toBuffer('image/png');
 }
 

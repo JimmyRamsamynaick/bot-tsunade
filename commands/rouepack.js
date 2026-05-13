@@ -1,15 +1,14 @@
 const { SlashCommandBuilder, EmbedBuilder, AttachmentBuilder } = require('discord.js');
 const { spinWheel } = require('../utils/wheel');
-const { addPoints } = require('../utils/storage');
 const { generateWheelImage } = require('../utils/wheelRenderer');
-const rewards = require('../rewards.json');
+const rewards = require('../rewards-pack.json');
 require('dotenv').config();
 const ownerId = process.env.OWNER_ID;
 
 module.exports = {
   data: new SlashCommandBuilder()
-    .setName('roue')
-    .setDescription('Faire tourner la roue de la fortune (points)')
+    .setName('rouepack')
+    .setDescription('Faire tourner la roue de la fortune (packs)')
     .addUserOption(option =>
       option.setName('utilisateur')
         .setDescription('L\'utilisateur qui recevra la récompense')
@@ -30,16 +29,11 @@ module.exports = {
     
     const finalImage = generateWheelImage(finalRotation, rewards, index);
     const finalAttachment = new AttachmentBuilder(finalImage, { name: 'wheel-final.png' });
-    const newPoints = addPoints(targetUser.id, reward.value);
     
     const embed = new EmbedBuilder()
-      .setColor(reward.value > 0 ? '#00ff00' : reward.value < 0 ? '#ff0000' : '#ffff00')
-      .setTitle('🎡 Résultat de la roue !')
+      .setColor('#0099ff')
+      .setTitle('🎡 Résultat de la roue pack !')
       .setDescription(`${targetUser} a obtenu **${reward.name}** !`)
-      .addFields(
-        { name: 'Points', value: reward.value >= 0 ? `+${reward.value}` : `${reward.value}`, inline: true },
-        { name: 'Nouveau solde', value: `${newPoints} points`, inline: true }
-      )
       .setImage('attachment://wheel-final.png')
       .setTimestamp();
     

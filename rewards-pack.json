@@ -1,0 +1,32 @@
+[
+  {
+    "name": "pack lingerie",
+    "value": 1,
+    "weight": 25
+  },
+  {
+    "name": "pack sextape",
+    "value": 1,
+    "weight": 20
+  },
+  {
+    "name": "pack cosplay",
+    "value": 1,
+    "weight": 20
+  },
+  {
+    "name": "pack lingerie solo",
+    "value": 1,
+    "weight": 15
+  },
+  {
+    "name": "pack sextape",
+    "value": 1,
+    "weight": 10
+  },
+  {
+    "name": "les 3 pack diff",
+    "value": 1,
+    "weight": 10
+  }
+]
