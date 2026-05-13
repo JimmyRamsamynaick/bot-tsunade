@@ -48,7 +48,7 @@ function drawWheel(ctx, rotation, rewards, winningIndex = null) {
     const x = Math.cos(angle) * (RADIUS * 0.6);
     const y = Math.sin(angle) * (RADIUS * 0.6);
     ctx.translate(x, y);
-    ctx.rotate(angle + Math.PI / 2);
+    ctx.rotate(angle - Math.PI / 2);
     ctx.scale(-1, 1);
     ctx.textAlign = 'center';
     ctx.fillStyle = '#FFFFFF';
