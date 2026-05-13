@@ -1,0 +1,32 @@
+[
+  {
+    "name": "+10 points",
+    "value": 10,
+    "weight": 40
+  },
+  {
+    "name": "+50 points",
+    "value": 50,
+    "weight": 25
+  },
+  {
+    "name": "+100 points",
+    "value": 100,
+    "weight": 15
+  },
+  {
+    "name": "Perte de 20 points",
+    "value": -20,
+    "weight": 10
+  },
+  {
+    "name": "Jackpot (+500 points)",
+    "value": 500,
+    "weight": 5
+  },
+  {
+    "name": "Rien",
+    "value": 0,
+    "weight": 5
+  }
+]
