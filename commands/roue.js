@@ -29,7 +29,7 @@ module.exports = {
         .setColor('#ffaa00')
         .setTitle('🎡 La roue tourne...')
         .setDescription('Préparez-vous... 🔄')
-        .setImage('https://media1.tenor.com/m/N5vZ19WfNcAAAAC/wheel-spin.gif')
+        .setThumbnail('https://media.tenor.com/Rs59s85eXOEAAAAi/fortune-wheel-wheel.gif')
         .setTimestamp();
       
       await interaction.editReply({ embeds: [loadingEmbed] });
