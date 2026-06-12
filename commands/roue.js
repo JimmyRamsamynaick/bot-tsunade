@@ -45,6 +45,7 @@ module.exports = {
       const finalRotation = -Math.PI / 2 - index * segmentAngle - segmentAngle / 2;
       
       const finalImage = generateWheelImage(finalRotation, rewards, index);
+      console.log(`Final image buffer size: ${finalImage.length} bytes`);
       const finalAttachment = new AttachmentBuilder(finalImage, { name: 'wheel-final.png' });
       const newPoints = addPoints(targetUser.id, reward.value);
       
