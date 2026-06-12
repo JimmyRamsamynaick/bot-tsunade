@@ -23,6 +23,19 @@ module.exports = {
         await interaction.deferReply();
       }
       
+      // Embed de chargement stylé
+      const loadingEmbed = new EmbedBuilder()
+        .setColor('#ffaa00')
+        .setTitle('🎡 La roue tourne...')
+        .setDescription('Préparez-vous pour le pack... 🔄')
+        .setImage('https://media1.tenor.com/m/N5vZ19WfNcAAAAC/wheel-spin.gif')
+        .setTimestamp();
+      
+      await interaction.editReply({ embeds: [loadingEmbed] });
+      
+      // Attendre 1.5 secondes pour l'animation
+      await new Promise(resolve => setTimeout(resolve, 1500));
+      
       const targetUser = interaction.options.getUser('utilisateur');
       const { reward, index } = spinWheel(rewards);
       
@@ -33,7 +46,7 @@ module.exports = {
       const finalImage = generateWheelImage(finalRotation, rewards, index);
       const finalAttachment = new AttachmentBuilder(finalImage, { name: 'wheel-final.png' });
       
-      const embed = new EmbedBuilder()
+      const finalEmbed = new EmbedBuilder()
         .setColor('#0099ff')
         .setTitle('🎡 Résultat de la roue pack !')
         .setDescription(`${targetUser} a obtenu **${reward.name}** !`)
@@ -41,9 +54,9 @@ module.exports = {
         .setTimestamp();
       
       if (interaction.deferred && !interaction.replied) {
-        await interaction.editReply({ embeds: [embed], files: [finalAttachment] });
+        await interaction.editReply({ embeds: [finalEmbed], files: [finalAttachment] });
       } else if (!interaction.replied) {
-        await interaction.reply({ embeds: [embed], files: [finalAttachment] });
+        await interaction.reply({ embeds: [finalEmbed], files: [finalAttachment] });
       }
     } catch (error) {
       console.error('Error in rouepack command:', error);

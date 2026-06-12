@@ -24,6 +24,19 @@ module.exports = {
         await interaction.deferReply();
       }
       
+      // Embed de chargement stylé
+      const loadingEmbed = new EmbedBuilder()
+        .setColor('#ffaa00')
+        .setTitle('🎡 La roue tourne...')
+        .setDescription('Préparez-vous... 🔄')
+        .setImage('https://media1.tenor.com/m/N5vZ19WfNcAAAAC/wheel-spin.gif')
+        .setTimestamp();
+      
+      await interaction.editReply({ embeds: [loadingEmbed] });
+      
+      // Attendre 1.5 secondes pour l'animation
+      await new Promise(resolve => setTimeout(resolve, 1500));
+      
       const targetUser = interaction.options.getUser('utilisateur');
       const { reward, index } = spinWheel(rewards);
       
@@ -35,7 +48,7 @@ module.exports = {
       const finalAttachment = new AttachmentBuilder(finalImage, { name: 'wheel-final.png' });
       const newPoints = addPoints(targetUser.id, reward.value);
       
-      const embed = new EmbedBuilder()
+      const finalEmbed = new EmbedBuilder()
         .setColor(reward.value > 0 ? '#00ff00' : reward.value < 0 ? '#ff0000' : '#ffff00')
         .setTitle('🎡 Résultat de la roue !')
         .setDescription(`${targetUser} a obtenu **${reward.name}** !`)
@@ -47,9 +60,9 @@ module.exports = {
         .setTimestamp();
       
       if (interaction.deferred && !interaction.replied) {
-        await interaction.editReply({ embeds: [embed], files: [finalAttachment] });
+        await interaction.editReply({ embeds: [finalEmbed], files: [finalAttachment] });
       } else if (!interaction.replied) {
-        await interaction.reply({ embeds: [embed], files: [finalAttachment] });
+        await interaction.reply({ embeds: [finalEmbed], files: [finalAttachment] });
       }
     } catch (error) {
       console.error('Error in roue command:', error);
