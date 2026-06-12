@@ -23,18 +23,17 @@ module.exports = {
         await interaction.deferReply();
       }
       
-      // Embed de chargement stylé
+      // Embed de chargement simple
       const loadingEmbed = new EmbedBuilder()
         .setColor('#ffaa00')
         .setTitle('🎡 La roue tourne...')
-        .setDescription('Préparez-vous pour le pack... 🔄')
-        .setThumbnail('https://media.tenor.com/Rs59s85eXOEAAAAi/fortune-wheel-wheel.gif')
+        .setDescription('Préparez-vous pour le pack... 🔄 ⏳')
         .setTimestamp();
       
       await interaction.editReply({ embeds: [loadingEmbed] });
       
-      // Attendre 1.5 secondes pour l'animation
-      await new Promise(resolve => setTimeout(resolve, 1500));
+      // Attendre un peu pour l'effet
+      await new Promise(resolve => setTimeout(resolve, 1000));
       
       const targetUser = interaction.options.getUser('utilisateur');
       const { reward, index } = spinWheel(rewards);
@@ -44,7 +43,6 @@ module.exports = {
       const finalRotation = -Math.PI / 2 - index * segmentAngle - segmentAngle / 2;
       
       const finalImage = generateWheelImage(finalRotation, rewards, index);
-      console.log(`Final image buffer size: ${finalImage.length} bytes`);
       const finalAttachment = new AttachmentBuilder(finalImage, { name: 'wheel-final.png' });
       
       const finalEmbed = new EmbedBuilder()
