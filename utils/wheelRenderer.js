@@ -50,7 +50,6 @@ function drawWheel(ctx, rotation, rewardsList = rewards, winningIndex = null) {
     const y = Math.sin(angle) * (RADIUS * 0.6);
     ctx.translate(x, y);
     ctx.rotate(angle + Math.PI / 2);
-    ctx.scale(-1, 1);
     ctx.textAlign = 'center';
     ctx.fillStyle = '#FFFFFF';
     ctx.font = 'bold 12px Arial';
