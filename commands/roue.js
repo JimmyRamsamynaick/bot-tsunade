@@ -20,9 +20,7 @@ module.exports = {
     }
 
     try {
-      if (!interaction.deferred && !interaction.replied) {
-        await interaction.deferReply();
-      }
+      await interaction.deferReply();
       
       // Embed de chargement simple
       const loadingEmbed = new EmbedBuilder()
@@ -58,17 +56,11 @@ module.exports = {
         .setImage('attachment://wheel-final.png')
         .setTimestamp();
       
-      if (interaction.deferred && !interaction.replied) {
-        await interaction.editReply({ embeds: [finalEmbed], files: [finalAttachment] });
-      } else if (!interaction.replied) {
-        await interaction.reply({ embeds: [finalEmbed], files: [finalAttachment] });
-      }
+      await interaction.editReply({ embeds: [finalEmbed], files: [finalAttachment] });
     } catch (error) {
       console.error('Error in roue command:', error);
       try {
-        if (!interaction.replied) {
-          await interaction.reply({ content: 'Une erreur est survenue !', ephemeral: true });
-        }
+        await interaction.followUp({ content: 'Une erreur est survenue !', ephemeral: true });
       } catch (e) {
         console.error('Error replying to interaction:', e);
       }
